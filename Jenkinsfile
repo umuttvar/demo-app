@@ -82,7 +82,7 @@ spec:
               --input "$WORKSPACE/image.tar" \
               --severity HIGH,CRITICAL \
               --ignore-unfixed \
-              --exit-code 0 \
+              --exit-code 1 \
               --no-progress
           '''
         }
