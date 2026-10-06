@@ -1,5 +1,8 @@
 FROM python:3.13-slim
 
+ARG APP_VERSION=dev
+ENV APP_VERSION= $APP_VERSION
+
 WORKDIR /app
 
 COPY requirements.txt .
