@@ -5,10 +5,9 @@ ENV APP_VERSION=$APP_VERSION
 
 WORKDIR /app
 
-RUN pip install --no-cache-dir --upgrade pip setuptools
-
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt \
+ && pip uninstall -y pip
 
 COPY app/ app/
 
