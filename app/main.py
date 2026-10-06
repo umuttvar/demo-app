@@ -1,4 +1,4 @@
-nimport os
+import os
 from fastapi import FastAPI
 
 app = FastAPI()
