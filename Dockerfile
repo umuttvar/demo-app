@@ -1,4 +1,4 @@
-FROM 3.13.16-slim-bookworm
+FROM python:3.13.16-slim-bookworm   ← olması gereken
 
 ARG APP_VERSION=dev
 ENV APP_VERSION=$APP_VERSION
