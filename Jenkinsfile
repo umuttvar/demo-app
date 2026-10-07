@@ -35,6 +35,11 @@ spec:
         items:
           - key: .dockerconfigjson
             path: config.json
+    - name: git
+      image: alpine/git:v2.54.0
+      command: ["cat"]
+      tty: true
+
 '''
     }
   }
@@ -93,6 +98,29 @@ spec:
       steps {
         container('crane') {
           sh 'crane push "$WORKSPACE/image.tar" "$IMAGE:$VERSION"'
+        }
+      }
+    }
+    
+    stage ('Update GitOps') {
+      steps {
+        container ('git') {
+          withCredentials([usernamePassword(credentialsId: 'github-gitops' ,
+                                            usernameVariable: 'GIT_USER',
+                                            passwordVariable: 'GIT_TOKEN')]) {
+          sh '''
+            rm -rf g'tops
+            g't clone "https://${GIT_USER}:${GIT_TOKEN}@github.com/umuttvar/homelab-k8s.git" gitops
+            cd gitops
+
+            sed -i "s|^  tag: .*|  tag: \\"${VERSION}\\"|" charts/demo-app/values.yaml
+            git config user.name "Jenkins CI"
+            git config user.email "jenkins@homelab.local"
+            git add charts/demo-app/values.yaml
+            git commit -m "demo-app: deploy ${VERSION}"
+            git push origin main
+
+          '''                                  }
         }
       }
     }
