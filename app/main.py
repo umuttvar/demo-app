@@ -7,7 +7,7 @@ VERSION = os.getenv("APP_VERSION", "dev")
 
 @app.get("/")
 def root():
-    return {"message": "Bu sürüm tamamen otomatik deploy edildi!", "version": VERSION}
+    return {"message": "PANDA SİSKODUR KÜCÜK BASAK GICIKTIR!", "version": VERSION}
 
 
 @app.get("/health")
