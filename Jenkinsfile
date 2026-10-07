@@ -32,6 +32,10 @@ spec:
       image: alpine/git:v2.54.0
       command: ["cat"]
       tty: true
+    - name: sonar
+      image: sonarsource/sonar-scanner-cli:12.2.0.4256_8.1.0
+      command: ["cat"]
+      tty: true
   volumes:
     - name: docker-config
       secret:
@@ -59,7 +63,20 @@ spec:
       steps {
         container('python') {
           sh 'pip install --no-cache-dir -r requirements-dev.txt'
-          sh 'python -m pytest -v'
+          sh 'python -m pytest -v --cov=app --cov-report=xml'
+        }
+      }
+    }
+    stage('Code Quality') {
+      steps {
+        container('sonar') {
+          withCredentials([string(credentialsId: 'sonarcloud-token', variable: 'SONAR_TOKEN')]) {
+            sh '''
+              sonar-scanner \
+                -Dsonar.host.url=https://sonarcloud.io \
+                -Dsonar.qualitygate.wait=true
+            '''
+          }
         }
       }
     }
