@@ -28,6 +28,10 @@ spec:
       volumeMounts:
         - name: docker-config
           mountPath: /docker-config
+    - name: git
+      image: alpine/git:v2.54.0
+      command: ["cat"]
+      tty: true
   volumes:
     - name: docker-config
       secret:
@@ -35,10 +39,7 @@ spec:
         items:
           - key: .dockerconfigjson
             path: config.json
-    - name: git
-      image: alpine/git:v2.54.0
-      command: ["cat"]
-      tty: true
+   
 
 '''
     }
