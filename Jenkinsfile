@@ -110,8 +110,8 @@ spec:
                                             usernameVariable: 'GIT_USER',
                                             passwordVariable: 'GIT_TOKEN')]) {
           sh '''
-            rm -rf g'tops
-            g't clone "https://${GIT_USER}:${GIT_TOKEN}@github.com/umuttvar/homelab-k8s.git" gitops
+            rm -rf gitops
+            git clone "https://${GIT_USER}:${GIT_TOKEN}@github.com/umuttvar/homelab-k8s.git" gitops
             cd gitops
 
             sed -i "s|^  tag: .*|  tag: \\"${VERSION}\\"|" charts/demo-app/values.yaml
