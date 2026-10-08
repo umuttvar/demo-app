@@ -6,7 +6,10 @@ from prometheus_fastapi_instrumentator import Instrumentator
 app = FastAPI()
 VERSION = os.getenv("APP_VERSION", "dev")
 
-Instrumentator().instrument(app).expose(app)
+Instrumentator().instrument(
+    app,
+    latency_lowr_bukcets=(0.05, 0.1, 0.25, 0.5, 0.75, 1. 2.5),
+).expose(app)
 
 
 @app.get("/")
