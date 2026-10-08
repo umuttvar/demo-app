@@ -10,32 +10,56 @@ spec:
       image: python:3.13-slim
       command: ["sleep"]
       args: ["infinity"]
+      resources:
+      requests: { cpu: "50m", memory: "64Mi" }
+      limits:   { memory: "256Mi" }
+  
     - name: kaniko
       image: gcr.io/kaniko-project/executor:debug
       command: ["/busybox/cat"]
       tty: true
+      resources:
+      requests: { cpu: "100m", memory: "256Mi" }
+      limits:   { memory: "1Gi" }
+
     - name: trivy
       image: aquasec/trivy:0.75.0
       command: ["cat"]
       tty: true
+       resources:
+      requests: { cpu: "50m", memory: "128Mi" }
+      limits:   { memory: "768Mi" }
+
     - name: crane
       image: gcr.io/go-containerregistry/crane:debug
       command: ["/busybox/cat"]
       tty: true
+      resources:
+      requests: { cpu: "20m", memory: "64Mi" }
+      limits:   { memory: "256Mi" }
       env:
         - name: DOCKER_CONFIG
           value: /docker-config
       volumeMounts:
         - name: docker-config
           mountPath: /docker-config
+
     - name: git
       image: alpine/git:v2.54.0
       command: ["cat"]
       tty: true
+      resources:
+      requests: { cpu: "20m", memory: "64Mi" }
+      limits:   { memory: "256Mi" }
+
     - name: sonar
       image: sonarsource/sonar-scanner-cli:12.2.0.4256_8.1.0
       command: ["cat"]
       tty: true
+      resources:
+      requests: { cpu: "100m", memory: "256Mi" }
+      limits:   { memory: "1Gi" }
+      
   volumes:
     - name: docker-config
       secret:
@@ -143,4 +167,8 @@ spec:
       }
     }
   }
+}
+options {
+  timeout(time: 20, unit: 'MINUTES')
+  disableConcurrentBuilds()
 }
