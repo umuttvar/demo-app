@@ -26,7 +26,7 @@ spec:
       image: aquasec/trivy:0.75.0
       command: ["cat"]
       tty: true
-       resources:
+      resources:
       requests: { cpu: "50m", memory: "128Mi" }
       limits:   { memory: "768Mi" }
 
