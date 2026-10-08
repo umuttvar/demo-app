@@ -56,6 +56,9 @@ spec:
       image: sonarsource/sonar-scanner-cli:12.2.0.4256_8.1.0
       command: ["cat"]
       tty: true
+      env:
+        - name: SONAR_SCANNER_JAVA_OPTS
+          value: "-XX:MaxRAMPercentage=75"
       resources:
         requests: { cpu: "100m", memory: "256Mi" }
         limits:   { memory: "1Gi" }
@@ -172,4 +175,3 @@ options {
   disableConcurrentBuilds()
 }
 }
-
